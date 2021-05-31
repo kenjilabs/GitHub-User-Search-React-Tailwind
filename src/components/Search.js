@@ -5,7 +5,6 @@ import {Input} from "./ui/Input";
 import {Avatar} from "./ui/Avatar";
 import axios from "axios";
 import {Alert} from "./ui/Alert";
-import _ from "lodash";
 
 const BASE_URL = 'https://api.github.com/search/users';
 const PER_PAGE = 9;
@@ -56,7 +55,7 @@ export default () => {
 
         axios.get(BASE_URL, {
             params: {
-                q: value,
+                q: value + " in:login",
                 page: page,
                 per_page: PER_PAGE,
             }

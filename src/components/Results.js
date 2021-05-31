@@ -1,5 +1,4 @@
 import Table from 'rc-table';
-import {Button} from "./ui/Button";
 import {Pagination} from "./Pagination";
 
 export const Results = ({data = [], columns = [], className = '', total = 0, page = 0, perPage, setPage}) => {
@@ -8,8 +7,6 @@ export const Results = ({data = [], columns = [], className = '', total = 0, pag
         return '';
     }
 
-    const nextPageNumber = page * perPage;
-    const prevPageNumber = nextPageNumber - perPage;
     return (
         <div className={className}>
             <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
