@@ -44,14 +44,12 @@ export default () => {
     const [value, setValue] = useState("");
     const [totalCount, setTotalCount] = useState(0);
     const [page, setPage] = useState(FIRST_PAGE);
-    const [sort, setSort] = useState('login');
-    const [order, setOrder] = useState('asc');
 
     useEffect(search, [page]);
 
 
-    function search(){
-        if(value === ''){
+    function search() {
+        if (value === '') {
             return;
         }
         setIsLoading(true);
@@ -60,16 +58,19 @@ export default () => {
             params: {
                 q: value,
                 page: page,
-                sort: sort,
-                order: order,
                 per_page: PER_PAGE,
             }
         })
             .then(function (response) {
-                const {data, status} = response;
+                const {data} = response;
                 setIsLoading(false);
                 setItems(data.items);
                 setTotalCount(data.total_count);
+
+                if (data.total_count === 0) {
+                    setError('No record found!');
+                }
+
             })
             .catch(function (er) {
                 const {message} = er;
@@ -83,9 +84,9 @@ export default () => {
     function handleSubmit(e) {
         e.preventDefault();
         reset();
-        if(FIRST_PAGE === page){
+        if (FIRST_PAGE === page) {
             search();
-        }else{
+        } else {
             setPage(FIRST_PAGE)
         }
     }
@@ -94,7 +95,7 @@ export default () => {
         setValue(e.target.value)
     }
 
-    function handleClear(){
+    function handleClear() {
         setValue('');
         reset();
     }
@@ -109,10 +110,12 @@ export default () => {
             <div className="sm:mt-40 ">
 
                 <form className="sm:w-9/12 m-auto" onSubmit={handleSubmit}>
-                    <h1 className="font-bold text-left text-gray-400 text-2xl sm:text-4xl mb-4 sm:mb-8">Search GitHub User</h1>
+                    <h1 className="font-bold text-left text-gray-400 text-2xl sm:text-4xl mb-4 sm:mb-8">Search GitHub
+                        User</h1>
 
                     <div className="w-full flex relative mb-8">
-                        {value !=='' && <span onClick={handleClear} className="absolute -bottom-7 text-xs text-gray-400 left-2 font-semibold underline cursor-pointer">Clear Search</span>}
+                        {value !== '' && <span onClick={handleClear}
+                                               className="absolute -bottom-7 text-xs text-gray-400 left-2 font-semibold underline cursor-pointer">Clear Search</span>}
                         <Input placeholder="Search..."
                                size="LARGE"
                                value={value}
@@ -130,7 +133,8 @@ export default () => {
                     </div>
                 </form>
             </div>
-            <Results data={items} total={totalCount} page={page} perPage={PER_PAGE} setPage={setPage} columns={columns} className="relative sm:w-9/12 m-auto"/>
+            <Results data={items} total={totalCount} page={page} perPage={PER_PAGE} setPage={setPage} columns={columns}
+                     className="relative sm:w-9/12 m-auto"/>
         </div>
 
     )
